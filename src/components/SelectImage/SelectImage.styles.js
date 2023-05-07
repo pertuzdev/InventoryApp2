@@ -1,27 +1,23 @@
-import {StyleSheet} from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
 import {colors} from '../../styles/globalStyles';
+
+const width = Dimensions.get('window').width;
 
 export const styles = StyleSheet.create({
   head: {
     alignItems: 'center',
-    marginTop: 20,
     marginBottom: 16,
   },
   imgCont: {
-    width: 200,
-    height: 200,
+    width,
+    height: 300,
     backgroundColor: colors.gray,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 15,
   },
   img: {
-    //flex: 1,
-    //resizeMode: 'contain',
-    width: 200,
-    height: 200,
-    borderRadius: 15,
-    //backgroundColor: 'blue',
+    width,
+    height: 300,
   },
   splashImg: {
     width: 100,
@@ -29,15 +25,30 @@ export const styles = StyleSheet.create({
     resizeMode: 'contain',
     //backgroundColor: 'blue',
   },
-  editBtn: {
-    //alignSelf: 'flex-end',
+  addBtnWrapper: {
+    width,
+    alignItems: 'center',
     position: 'absolute',
-    bottom: -10,
-    right: -10,
-    //margin: -16,
+    bottom: 0,
+    height: 20,
+  },
+  addBtn: {
     backgroundColor: colors.primaryBlue,
     padding: 8,
     borderWidth: 1,
     borderRadius: 100,
+  },
+  imageViewFooter: {
+    position: 'absolute',
+    top: 10,
+    left: 10,
+    fontFamily: 'Poppins',
+    fontSize: 13,
+    color: 'white',
+    textAlign: 'center',
+    paddingVertical: 2,
+    paddingHorizontal: 12,
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    borderRadius: 10,
   },
 });

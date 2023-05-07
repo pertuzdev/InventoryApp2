@@ -24,8 +24,11 @@ import BottomOptions from '../../components/BottomOptions/BottomOptions';
 import SelectImage from '../../components/SelectImage/SelectImage';
 import BottomSheet from '../../components/BottomSheet/BottomSheet';
 
+import 'react-native-get-random-values';
+import {v4 as uuidv4} from 'uuid';
+
 export default function EditItemScreen({route, navigation}) {
-  const {id, code, name, imageURL, quantity, cost, date, description} =
+  const {id, code, name, imagesArr, quantity, cost, date, description} =
     route.params;
 
   const refRBSheet = useRef();
@@ -39,6 +42,7 @@ export default function EditItemScreen({route, navigation}) {
     defaultValues: {
       code: code,
       name: name,
+      images: imagesArr,
       quantity: quantity.toString(),
       cost: cost.toString(),
       date: new Date(date),
@@ -54,30 +58,29 @@ export default function EditItemScreen({route, navigation}) {
     refRBSheet.current.close();
   };
 
-  const {image, takePhoto, chosePhotoFromGallery, cleanPhotos} =
+  const {images, takePhoto, chosePhotoFromGallery, cleanPhotos} =
     useImagePick(closeSheetBottom);
 
   const buildPathRef = ({itemName}) => {
     const nameWithoutSpaces = itemName.replace(/\s/g, '');
-    return `/images_products/InventoryApp_Image_${nameWithoutSpaces}_${Date.parse(
-      new Date(),
-    )}.jpg`;
+    return `/images_products/InventoryApp_Image_${nameWithoutSpaces}_${uuidv4()}.jpg`;
   };
 
   const handleSave = async data => {
     setLoading(true);
-    const pathRef = buildPathRef({itemName: data.name});
 
-    if (image && !imageURL) {
-      const url = await uploadFile(pathRef, image);
-      data.imageURL = url;
-    } else if (image && imageURL) {
-      console.log(imageURL, '|||', image, '|||', 'SEGUNDO');
-      await deleteFileFromURL(imageURL);
-      const url = await uploadFile(pathRef, image);
-      data.imageURL = url;
-    } else if (!image && imageURL) {
-      data.imageURL = imageURL;
+    if (images && images.length > 0) {
+      try {
+        await Promise.all(
+          images.map(async image => {
+            const pathRef = buildPathRef({itemName: data.name});
+            const url = await uploadFile(pathRef, image);
+            data.images.push(url);
+          }),
+        );
+      } catch (error) {
+        console.log(error);
+      }
     }
 
     data.cost = Number(data.cost);
@@ -88,7 +91,6 @@ export default function EditItemScreen({route, navigation}) {
     console.log(data, 'dataToUpdate');
 
     updateItem(id, data).then(() => {
-      cleanPhotos();
       setLoading(false);
       navigation.navigate('Detail', {
         id,
@@ -102,7 +104,7 @@ export default function EditItemScreen({route, navigation}) {
     const {_formValues} = control;
 
     const validation =
-      image ||
+      images ||
       _formValues.code !== code ||
       _formValues.name !== name ||
       Number(_formValues.cost) !== cost ||
@@ -127,7 +129,7 @@ export default function EditItemScreen({route, navigation}) {
         <ScrollView style={styles.scrollCont}>
           <SelectImage
             openSheetBottom={openSheetBottom}
-            image={image || imageURL}
+            images={[...imagesArr, ...images]}
           />
           <ItemForm
             control={control}

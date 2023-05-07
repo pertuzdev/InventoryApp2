@@ -21,6 +21,8 @@ import ActivityIndicator from '../../components/ActivityIndicator/ActivityIndica
 import BottomOptions from '../../components/BottomOptions/BottomOptions';
 import BottomSheet from '../../components/BottomSheet/BottomSheet';
 import SelectImage from '../../components/SelectImage/SelectImage';
+import 'react-native-get-random-values';
+import {v4 as uuidv4} from 'uuid';
 
 export default function CreateItemScreen({navigation}) {
   const dateCaptured = new Date();
@@ -41,6 +43,7 @@ export default function CreateItemScreen({navigation}) {
       cost: '',
       date: dateCaptured,
       description: '',
+      images: [],
     },
   });
 
@@ -52,22 +55,28 @@ export default function CreateItemScreen({navigation}) {
     refRBSheet.current.close();
   };
 
-  const {image, takePhoto, chosePhotoFromGallery, cleanPhotos} =
+  const {images, takePhoto, chosePhotoFromGallery} =
     useImagePick(closeSheetBottom);
 
   const buildPathRef = ({itemName}) => {
     const nameWithoutSpaces = itemName.replace(/\s/g, '');
-    return `/images_products/InventoryApp_Image_${nameWithoutSpaces}_${Date.parse(
-      new Date(),
-    )}.jpg`;
+    return `/images_products/InventoryApp_Image_${nameWithoutSpaces}_${uuidv4()}.jpg`;
   };
 
   const handleSave = async data => {
     setLoading(true);
-    if (image) {
-      const pathRef = buildPathRef({itemName: data.name});
-      const url = await uploadFile(pathRef, image);
-      data.imageURL = url;
+    if (images && images.length > 0) {
+      try {
+        await Promise.all(
+          images.map(async image => {
+            const pathRef = buildPathRef({itemName: data.name});
+            const url = await uploadFile(pathRef, image);
+            data.images.push(url);
+          }),
+        );
+      } catch (error) {
+        console.log(error);
+      }
     }
 
     data.cost = Number(data.cost);
@@ -78,7 +87,6 @@ export default function CreateItemScreen({navigation}) {
     console.log(data, 'dataToSave');
 
     addItem(data).then(() => {
-      cleanPhotos();
       setLoading(false);
       navigation.navigate('Home', {message: 'Producto creado'});
     });
@@ -87,7 +95,7 @@ export default function CreateItemScreen({navigation}) {
   const hasUnsavedChanges = () => {
     const {code, name, cost, description} = control._formValues;
     const validation =
-      image || code || name || cost || description ? true : false;
+      images || code || name || cost || description ? true : false;
     return validation ? true : false;
   };
 
@@ -101,7 +109,7 @@ export default function CreateItemScreen({navigation}) {
     <ActivityIndicator loading={loading}>
       <View style={styles.container}>
         <ScrollView style={styles.scrollCont}>
-          <SelectImage openSheetBottom={openSheetBottom} image={image} />
+          <SelectImage openSheetBottom={openSheetBottom} images={images} />
           <ItemForm
             control={control}
             errors={errors}

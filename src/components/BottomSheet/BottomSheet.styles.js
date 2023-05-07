@@ -1,4 +1,5 @@
 import {StyleSheet} from 'react-native';
+import {colors} from '../../styles/globalStyles';
 
 export const styles = StyleSheet.create({
   sheetContainer: {
@@ -33,5 +34,6 @@ export const styles = StyleSheet.create({
   },
   sheetIconTxt: {
     marginTop: 4,
+    color: colors.darkGray,
   },
 });

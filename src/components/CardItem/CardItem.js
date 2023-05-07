@@ -16,13 +16,22 @@ export default function CardItem({
   cost = '',
   date = {},
   description = '',
+  images = [],
 }) {
+  let imagesToUse = [];
+
+  if (imageURL) {
+    imagesToUse = [imageURL];
+  } else if (images && images.length > 0) {
+    imagesToUse = images;
+  }
+
   const handlePress = () => {
     navigation.navigate('Detail', {
       id,
       code,
       name,
-      imageURL,
+      images: imagesToUse,
       quantity,
       cost,
       date,
@@ -37,8 +46,8 @@ export default function CardItem({
       onPress={handlePress}>
       <View style={[styles.wrapper]}>
         <View style={styles.imgCont}>
-          {imageURL ? (
-            <Image style={styles.img} source={{uri: imageURL}} />
+          {imagesToUse?.length > 0 ? (
+            <Image style={styles.img} source={{uri: imagesToUse[0]}} />
           ) : (
             <Image
               style={styles.splashImg}

@@ -1,9 +1,12 @@
-import React, {useState} from 'react';
+import {useState} from 'react';
+import {Dimensions} from 'react-native';
 
 import ImagePicker from 'react-native-image-crop-picker';
 
+const width = Dimensions.get('window').width;
+
 export default function useImagePick(actionAfterImage) {
-  const [image, setImage] = useState(null);
+  const [images, setImages] = useState([]);
 
   const cleanPhotos = () => {
     ImagePicker.cleanPermanentFiles() //cleanPermanentFiles
@@ -17,13 +20,15 @@ export default function useImagePick(actionAfterImage) {
 
   const chosePhotoFromGallery = () => {
     ImagePicker.openPicker({
-      width: 400,
-      height: 400,
+      width,
+      height: 300,
       cropping: true,
+      multiple: true,
     })
-      .then(img => {
-        console.log(img, 'imageFromGallery');
-        setImage(img.path);
+      .then(imgs => {
+        console.log(imgs, 'imageFromGallery2');
+        const paths = imgs.map(img => img.path);
+        setImages([...images, ...paths]);
         actionAfterImage();
       })
       .catch(e => {
@@ -33,13 +38,13 @@ export default function useImagePick(actionAfterImage) {
 
   const takePhoto = () => {
     ImagePicker.openCamera({
-      width: 400,
-      height: 400,
+      width,
+      height: 300,
       cropping: true,
     })
       .then(img => {
         console.log(img, 'imageFromCamera');
-        setImage(img.path);
+        setImages([...images, img.path]);
         actionAfterImage();
       })
       .catch(e => {
@@ -47,5 +52,5 @@ export default function useImagePick(actionAfterImage) {
       });
   };
 
-  return {image, takePhoto, chosePhotoFromGallery, cleanPhotos};
+  return {images, takePhoto, chosePhotoFromGallery, cleanPhotos};
 }

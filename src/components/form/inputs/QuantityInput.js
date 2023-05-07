@@ -106,6 +106,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginHorizontal: 20,
     fontSize: 20,
+    color: colors.blackGray,
   },
   btn: {
     borderWidth: 2,

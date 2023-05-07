@@ -18,6 +18,7 @@ export const commonInputStyles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 16,
     borderRadius: 15,
+    color: colors.blackGray,
   },
   inputContainer: {
     marginBottom: 25,
@@ -29,5 +30,6 @@ export const commonInputStyles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
     borderRadius: 15,
+    color: colors.blackGray,
   },
 });

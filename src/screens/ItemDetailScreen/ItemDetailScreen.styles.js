@@ -8,7 +8,6 @@ export const styles = StyleSheet.create({
   scrollCont: {},
   head: {
     alignItems: 'center',
-    marginTop: 20,
   },
   title: {
     marginBottom: 12,
@@ -16,17 +15,15 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
   },
   imgCont: {
-    width: 200,
-    height: 200,
+    width: '100%',
+    height: 300,
     backgroundColor: colors.gray,
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: 15,
   },
   img: {
-    width: 200,
-    height: 200,
-    borderRadius: 15,
+    width: '100%',
+    height: 300,
   },
   splashImg: {
     width: 100,
@@ -72,5 +69,18 @@ export const styles = StyleSheet.create({
     fontFamily: 'Roboto-Medium',
     fontSize: 18,
     color: colors.blackGray,
+  },
+  imageViewFooter: {
+    position: 'absolute',
+    top: 10,
+    left: 10,
+    fontFamily: 'Poppins',
+    fontSize: 13,
+    color: 'white',
+    textAlign: 'center',
+    paddingVertical: 2,
+    paddingHorizontal: 12,
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    borderRadius: 10,
   },
 });

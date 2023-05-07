@@ -5,12 +5,32 @@ import RBSheet from 'react-native-raw-bottom-sheet';
 
 import {styles} from './BottomSheet.styles';
 import {colors} from '../../styles/globalStyles';
+import {usePermissions} from '../../hooks/usePermissions';
 
 export default function BottomSheet({
   refRBSheet,
   takePhoto,
   chosePhotoFromGallery,
 }) {
+  const {
+    handleCameraPermissions,
+    handleMediaFilesPermissions,
+    hasCameraPermissions,
+    hasMediaFilesPermissions,
+  } = usePermissions();
+
+  const handleTakePhoto = () => {
+    handleCameraPermissions();
+
+    console.log(hasCameraPermissions());
+
+    if (hasCameraPermissions()) takePhoto();
+  };
+
+  const handleGallery = () => {
+    handleMediaFilesPermissions();
+    if (hasMediaFilesPermissions) chosePhotoFromGallery();
+  };
   return (
     <RBSheet
       ref={refRBSheet}
@@ -34,7 +54,7 @@ export default function BottomSheet({
           <Pressable
             style={styles.sheetBtn}
             android_ripple={{color: colors.mediumGray}}
-            onPress={takePhoto}>
+            onPress={handleTakePhoto}>
             <View style={styles.sheetBtnWrapp}>
               <Image
                 style={styles.sheetOptIcon}
@@ -46,7 +66,7 @@ export default function BottomSheet({
           <Pressable
             style={styles.sheetBtn}
             android_ripple={{color: colors.mediumGray}}
-            onPress={chosePhotoFromGallery}>
+            onPress={handleGallery}>
             <View style={styles.sheetBtnWrapp}>
               <Image
                 style={styles.sheetOptIcon}

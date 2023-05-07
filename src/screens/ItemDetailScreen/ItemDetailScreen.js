@@ -1,23 +1,26 @@
-import React, {useEffect} from 'react';
-import {Image, Alert, Text, View, ToastAndroid} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Alert, Dimensions, Image, Text, ToastAndroid, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 
-import {styles} from './ItemDetailScreen.styles';
 import {colors} from '../../styles/globalStyles';
-import {TextStyles} from '../../styles/globalStyles';
+import {styles} from './ItemDetailScreen.styles';
 
-import {deleteItem} from '../../services/firestore/deleteItem';
 import {deleteFileFromURL} from '../../services/cloudStorage/deleteFileFromURL';
+import {deleteItem} from '../../services/firestore/deleteItem';
 
 import {formatDate} from '../../helpers/dates';
 
 import Button from '../../components/Button/Button';
 
+import Carousel from 'react-native-reanimated-carousel';
+
+const width = Dimensions.get('window').width;
+
 export default function ItemDetailScreen({route, navigation}) {
-  const {id, code, name, imageURL, quantity, cost, date, description} =
+  const {id, code, name, images, quantity, cost, date, description} =
     route.params;
 
-  console.log(route.params, 'id');
+  const [imageIndex, setImageIndex] = useState(0);
 
   const formatCost = () => {
     return cost / Math.floor(cost) === 1 ? `$ ${cost}.00` : `$ ${cost}`;
@@ -33,7 +36,7 @@ export default function ItemDetailScreen({route, navigation}) {
       id,
       code,
       name,
-      imageURL,
+      imagesArr: images,
       quantity,
       cost,
       date: date.toDate().toString(),
@@ -41,9 +44,20 @@ export default function ItemDetailScreen({route, navigation}) {
     });
   };
 
-  const removeItem = () => {
-    if (imageURL) deleteFileFromURL(imageURL);
-    deleteItem(id);
+  const removeItem = async () => {
+    if (images && images.length > 0) {
+      try {
+        await Promise.all(
+          images.map(async image => {
+            await deleteFileFromURL(image);
+          }),
+        );
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    await deleteItem(id);
     navigation.navigate('Home', {
       message: 'Producto eliminado',
     });
@@ -69,25 +83,66 @@ export default function ItemDetailScreen({route, navigation}) {
   };
 
   useEffect(() => {
+    navigation.setOptions({
+      title: name,
+    });
+  }, [name, navigation]);
+
+  useEffect(() => {
     if (route.params?.message) {
       showToast(route.params.message);
       navigation.setParams({message: ''});
     }
   }, [route.params?.message, navigation]);
 
+  const renderImage = () => {
+    if (images.length === 1) {
+      return <Image source={{uri: images[0]}} style={styles.img} />;
+    }
+
+    if (images.length > 1) {
+      return (
+        <>
+          <View style={{flex: 1}}>
+            <Carousel
+              loop
+              width={width}
+              height={300}
+              pagingEnabled={true}
+              data={images}
+              autoPlayReverse={false}
+              autoFillData={false}
+              scrollAnimationDuration={1000}
+              onSnapToItem={index => {
+                setImageIndex(index);
+              }}
+              renderItem={({index, item}) => (
+                <Image source={{uri: item}} style={styles.img} />
+              )}
+            />
+          </View>
+        </>
+      );
+    }
+
+    return (
+      <Image
+        source={require('../../assets/icons/ic_camera.png')}
+        style={styles.splashImg}
+      />
+    );
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollCont}>
         <View style={styles.head}>
-          <Text style={[styles.title, TextStyles.title]}>{name}</Text>
           <View style={styles.imgCont}>
-            {imageURL ? (
-              <Image source={{uri: imageURL}} style={styles.img} />
-            ) : (
-              <Image
-                source={require('../../assets/icons/ic_camera.png')}
-                style={styles.splashImg}
-              />
+            {renderImage()}
+            {images.length > 0 && (
+              <Text style={styles.imageViewFooter}>
+                {imageIndex + 1} / {images.length}
+              </Text>
             )}
           </View>
         </View>

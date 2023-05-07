@@ -30,6 +30,7 @@ export default function ItemList({navigation, items, loading}) {
               code={item.code}
               name={item.name}
               imageURL={item.imageURL}
+              images={item.images}
               quantity={item.quantity}
               cost={item.cost}
               date={item.date}
