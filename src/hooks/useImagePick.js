@@ -41,6 +41,7 @@ export default function useImagePick(actionAfterImage) {
       width,
       height: 300,
       cropping: true,
+      freeStyleCropEnabled: true,
     })
       .then(img => {
         console.log(img, 'imageFromCamera');

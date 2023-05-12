@@ -70,7 +70,7 @@ export const styles = StyleSheet.create({
     fontSize: 18,
     color: colors.blackGray,
   },
-  imageViewFooter: {
+  carouselPagination: {
     position: 'absolute',
     top: 10,
     left: 10,
@@ -82,5 +82,12 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 12,
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
     borderRadius: 10,
+  },
+  imageViewFooter: {
+    fontFamily: 'Poppins',
+    fontSize: 16,
+    color: 'white',
+    textAlign: 'center',
+    padding: 16,
   },
 });
