@@ -24,7 +24,13 @@ export default function SelectImage({openSheetBottom, images}) {
 
   const renderImage = () => {
     if (images && images.length === 1) {
-      return <Image source={{uri: images[0]}} style={styles.img} />;
+      return (
+        <View style={{flex: 1, width, height: 300}}>
+          <Pressable onPress={() => handleOpenGallery(0)}>
+            <Image source={{uri: images[0]}} style={styles.img} />
+          </Pressable>
+        </View>
+      );
     }
 
     if (images && images.length > 1) {

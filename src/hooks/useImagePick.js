@@ -61,7 +61,6 @@ export default function useImagePick(actionAfterImage) {
       height: 300,
     })
       .then(img => {
-        console.log(img, 'imageFromCamera');
         cropPhoto({imgPath: img.path});
         //setImages([...images, img.path]);
         actionAfterImage();
