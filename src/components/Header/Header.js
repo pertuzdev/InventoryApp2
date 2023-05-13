@@ -12,7 +12,7 @@ import InfoCard from '../InfoCard/InfoCard';
 import Button from '../Button/Button';
 
 export default function Header({style, onSearchBarPress, totalQty, totalCost}) {
-  const src = require('../../assets/images/logo.png');
+  const src = require('../../assets/images/variedades_alex_logo.png');
   const {logout} = useUserAuth();
   return (
     <View style={[styles.container, style]}>
@@ -20,10 +20,6 @@ export default function Header({style, onSearchBarPress, totalQty, totalCost}) {
         <View style={styles.profileWrapper}>
           <View style={styles.imgCont}>
             <Image source={src} style={styles.img} />
-          </View>
-          <View style={styles.txtWrapper}>
-            <Text style={TextStyles.title}>Variedades Alex</Text>
-            <Text style={TextStyles.cardDescription}>Perfil / Propietario</Text>
           </View>
         </View>
         <View style={styles.btnContainer}>

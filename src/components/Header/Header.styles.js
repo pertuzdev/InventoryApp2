@@ -13,17 +13,17 @@ export const styles = StyleSheet.create({
     // backgroundColor: 'red',
   },
   imgCont: {
-    width: 60,
+    width: 150,
     height: 50,
     justifyContent: 'center',
     //backgroundColor: 'red',
   },
   img: {
-    //width: 200,
-    //height: 200,
+    /*  width: 200,
+    height: 200, */
     height: '100%',
     width: '100%',
-    resizeMode: 'contain',
+
     // backgroundColor: 'blue',
   },
   txtWrapper: {
