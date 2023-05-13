@@ -56,7 +56,7 @@ export default function CreateItemScreen({navigation}) {
     refRBSheet.current.close();
   };
 
-  const {images, takePhoto, chosePhotoFromGallery} =
+  const {images, takePhoto, deleteImage, chosePhotoFromGallery} =
     useImagePick(closeSheetBottom);
 
   const buildPathRef = ({itemName}) => {
@@ -110,7 +110,11 @@ export default function CreateItemScreen({navigation}) {
     <ActivityIndicator loading={loading}>
       <View style={styles.container}>
         <ScrollView style={styles.scrollCont}>
-          <SelectImage openSheetBottom={openSheetBottom} images={images} />
+          <SelectImage
+            openSheetBottom={openSheetBottom}
+            images={images}
+            deleteImage={deleteImage}
+          />
           <ItemForm
             control={control}
             errors={errors}

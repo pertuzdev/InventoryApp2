@@ -1,3 +1,4 @@
+import {alertOnDeleteImage} from 'helpers/alerts/alertOnDeleteImage';
 import {useState} from 'react';
 import {Dimensions} from 'react-native';
 
@@ -70,6 +71,18 @@ export default function useImagePick(actionAfterImage) {
       });
   };
 
+  const deleteImageProccess = imageIndex => {
+    const imagesCopy = [...images];
+    if (imagesCopy.length > 0) {
+      imagesCopy.splice(imageIndex, 1);
+      setImages(imagesCopy);
+    }
+  };
+
+  const deleteImage = imageIndex => {
+    alertOnDeleteImage(() => deleteImageProccess(imageIndex));
+  };
+
   return {
     images,
     takePhoto,
@@ -79,5 +92,6 @@ export default function useImagePick(actionAfterImage) {
     chosePhotoFromGallery,
     cleanPhotos,
     cropPhoto,
+    deleteImage,
   };
 }

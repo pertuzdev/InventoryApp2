@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Dimensions, Image, Pressable, Text, View} from 'react-native';
 
 import {styles} from './SelectImage.styles';
@@ -11,7 +11,7 @@ import {useGallery} from '../../hooks/useGallery';
 
 const width = Dimensions.get('window').width;
 
-export default function SelectImage({openSheetBottom, images}) {
+export default function SelectImage({openSheetBottom, images, deleteImage}) {
   const [imageIndex, setImageIndex] = useState(0);
 
   const {
@@ -21,6 +21,12 @@ export default function SelectImage({openSheetBottom, images}) {
     renderGalleryFooterComponent,
     setGalleryConfig,
   } = useGallery({images});
+
+  useEffect(() => {
+    if (images.length === 1) {
+      setImageIndex(0);
+    }
+  }, [images]);
 
   const renderImage = () => {
     if (images && images.length === 1) {
@@ -73,9 +79,19 @@ export default function SelectImage({openSheetBottom, images}) {
       <View style={styles.imgCont} android_ripple={{color: colors.darkGray}}>
         {renderImage()}
         {images.length > 0 && (
-          <Text style={styles.imageViewFooter}>
+          <Text style={styles.paginationCarousel}>
             {imageIndex + 1} / {images.length}
           </Text>
+        )}
+        {images.length > 0 && (
+          <Pressable
+            style={styles.deleteImgButton}
+            onPress={() => deleteImage(imageIndex)}>
+            <Image
+              source={require('../../assets/icons/ic_trash_white.png')}
+              style={{width: 16, height: 16, resizeMode: 'contain'}}
+            />
+          </Pressable>
         )}
         <ImageView
           images={galleryImages}

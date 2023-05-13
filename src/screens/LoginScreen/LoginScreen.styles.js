@@ -50,6 +50,6 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 16,
     marginHorizontal: 16,
-    marginBottom: 60,
+    marginBottom: 30,
   },
 });

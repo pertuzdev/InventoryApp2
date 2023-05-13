@@ -38,7 +38,7 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 100,
   },
-  imageViewFooter: {
+  paginationCarousel: {
     position: 'absolute',
     top: 10,
     left: 10,
@@ -50,5 +50,17 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 12,
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
     borderRadius: 10,
+  },
+  deleteImgButton: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    fontFamily: 'Poppins',
+    fontSize: 13,
+    color: 'white',
+    textAlign: 'center',
+    padding: 6,
+    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    borderRadius: 100,
   },
 });

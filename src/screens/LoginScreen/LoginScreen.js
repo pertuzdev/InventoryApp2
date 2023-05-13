@@ -71,13 +71,13 @@ const LoginScreen = ({navigation}) => {
             onPress={() => googleLogin()}
           />
         </View>
-        <TouchableOpacity
+        {/*  <TouchableOpacity
           style={styles.forgotButton}
           onPress={() => navigation.navigate('Signup')}>
           <Text style={styles.navButtonText}>
             Don't have an acount? Create here
           </Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </ScrollView>
     </ActivityIndicator>
   );

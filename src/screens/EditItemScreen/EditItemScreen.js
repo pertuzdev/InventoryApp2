@@ -58,7 +58,7 @@ export default function EditItemScreen({route, navigation}) {
     refRBSheet.current.close();
   };
 
-  const {images, takePhoto, chosePhotoFromGallery, cleanPhotos} =
+  const {images, takePhoto, chosePhotoFromGallery, deleteImage} =
     useImagePick(closeSheetBottom);
 
   const buildPathRef = ({itemName}) => {
@@ -129,6 +129,7 @@ export default function EditItemScreen({route, navigation}) {
         <ScrollView style={styles.scrollCont}>
           <SelectImage
             openSheetBottom={openSheetBottom}
+            deleteImage={deleteImage}
             images={[...imagesArr, ...images]}
           />
           <ItemForm
