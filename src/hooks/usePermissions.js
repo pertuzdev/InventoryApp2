@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {Platform} from 'react-native';
 import {check, PERMISSIONS, request} from 'react-native-permissions';
 
@@ -17,7 +17,6 @@ export const usePermissions = () => {
     if (Platform.OS === 'ios') {
       permissionStatus = await request(PERMISSIONS.IOS.CAMERA);
     } else {
-      console.log('entra2');
       permissionStatus = await request(PERMISSIONS.ANDROID.CAMERA);
     }
 
@@ -27,7 +26,7 @@ export const usePermissions = () => {
     });
   };
 
-  const verifiedCameraPermission = async () => {
+  const verifyCameraPermission = async () => {
     let permissionStatus;
 
     if (Platform.OS === 'ios') {
@@ -36,10 +35,10 @@ export const usePermissions = () => {
       permissionStatus = await check(PERMISSIONS.ANDROID.CAMERA);
     }
 
-    setPermissions({
-      ...permissions,
+    setPermissions(oldPermissions => ({
+      ...oldPermissions,
       cameraStatus: permissionStatus,
-    });
+    }));
   };
 
   const validateMediaFilesPermission = async () => {
@@ -59,7 +58,7 @@ export const usePermissions = () => {
     });
   };
 
-  const verifiedMediaFilesPermission = async () => {
+  const verifyMediaFilesPermission = async () => {
     let permissionStatus;
 
     if (Platform.OS === 'ios') {
@@ -68,10 +67,10 @@ export const usePermissions = () => {
       permissionStatus = await check(PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE);
     }
 
-    setPermissions({
-      ...permissions,
+    setPermissions(oldPermissions => ({
+      ...oldPermissions,
       mediaFilesStatus: permissionStatus,
-    });
+    }));
   };
 
   const hasCameraPermissions = () => {
@@ -100,7 +99,6 @@ export const usePermissions = () => {
   };
 
   const handleCameraPermissions = () => {
-    verifiedCameraPermission();
     if (
       permissions.cameraStatus === 'denied' ||
       permissions.cameraStatus === 'unavailable'
@@ -110,7 +108,6 @@ export const usePermissions = () => {
   };
 
   const handleMediaFilesPermissions = () => {
-    verifiedMediaFilesPermission();
     if (
       permissions.mediaFilesStatus === 'denied' ||
       permissions.mediaFilesStatus === 'unavailable'
@@ -119,12 +116,17 @@ export const usePermissions = () => {
     }
   };
 
+  useEffect(() => {
+    verifyCameraPermission();
+    verifyMediaFilesPermission();
+  }, []);
+
   return {
     permissions,
     validateCameraPermission,
     validateMediaFilesPermission,
-    verifiedCameraPermission,
-    verifiedMediaFilesPermission,
+    verifyCameraPermission,
+    verifyMediaFilesPermission,
     handleCameraPermissions,
     handleMediaFilesPermissions,
     hasCameraPermissions,
