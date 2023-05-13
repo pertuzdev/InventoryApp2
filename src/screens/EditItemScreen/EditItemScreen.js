@@ -63,7 +63,7 @@ export default function EditItemScreen({route, navigation}) {
 
   const buildPathRef = ({itemName}) => {
     const nameWithoutSpaces = itemName.replace(/\s/g, '');
-    return `/images_products/InventoryApp_Image_${nameWithoutSpaces}_${uuidv4()}.jpg`;
+    return `/images/InventoryApp_Image_${nameWithoutSpaces}_${uuidv4()}.jpg`;
   };
 
   const handleSave = async data => {

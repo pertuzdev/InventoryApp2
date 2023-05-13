@@ -9,7 +9,7 @@ export const listItemsFromFirestore = ({dispatch}) => {
   dispatch({type: ITEM_LIST_REQUEST});
 
   const subscriber = firestore()
-    .collection('Products')
+    .collection('Items')
     .orderBy('date', 'desc')
     .onSnapshot(querySnapshot => {
       const itemsArr = [];

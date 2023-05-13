@@ -2,7 +2,7 @@ import firestore from '@react-native-firebase/firestore';
 
 const getItems = callback => {
   const subscriber = firestore()
-    .collection('Products')
+    .collection('Items')
     .orderBy('date', 'desc')
     .onSnapshot(querySnapshot => {
       const itemsArr = [];

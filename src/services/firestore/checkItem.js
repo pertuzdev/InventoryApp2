@@ -2,7 +2,7 @@ import firestore, {query, where} from '@react-native-firebase/firestore';
 
 const checkItem = async (newCode, id) => {
   return firestore()
-    .collection('Products')
+    .collection('Items')
     .where('code', '==', newCode)
     .get()
     .then(querySnapshot => {
