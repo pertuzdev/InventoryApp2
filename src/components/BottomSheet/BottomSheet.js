@@ -22,8 +22,6 @@ export default function BottomSheet({
   const handleTakePhoto = () => {
     handleCameraPermissions();
 
-    console.log(hasCameraPermissions());
-
     if (hasCameraPermissions()) takePhoto();
   };
 

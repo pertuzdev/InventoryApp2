@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Keyboard, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 
@@ -7,6 +7,8 @@ import {useForm} from 'react-hook-form';
 import {styles} from './CreateItemScreen.styles';
 
 import firestore from '@react-native-firebase/firestore';
+import 'react-native-get-random-values';
+import {v4 as uuidv4} from 'uuid';
 
 import {addItem} from '../../services/firestore/addItem';
 import {uploadFile} from '../../services/cloudStorage/uploadFile';
@@ -21,8 +23,7 @@ import ActivityIndicator from '../../components/ActivityIndicator/ActivityIndica
 import BottomOptions from '../../components/BottomOptions/BottomOptions';
 import BottomSheet from '../../components/BottomSheet/BottomSheet';
 import SelectImage from '../../components/SelectImage/SelectImage';
-import 'react-native-get-random-values';
-import {v4 as uuidv4} from 'uuid';
+import {usePermissions} from '../../hooks/usePermissions';
 
 export default function CreateItemScreen({navigation}) {
   const dateCaptured = new Date();

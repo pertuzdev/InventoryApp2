@@ -15,6 +15,7 @@ export const useGallery = ({images}) => {
   };
 
   const handleOpenGallery = index => {
+    console.log('gall');
     setGalleryConfig({isVisible: true, index});
   };
 

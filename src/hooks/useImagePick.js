@@ -7,6 +7,7 @@ const width = Dimensions.get('window').width;
 
 export default function useImagePick(actionAfterImage) {
   const [images, setImages] = useState([]);
+  const [photoTaken, setPhotoTaken] = useState(null);
 
   const cleanPhotos = () => {
     ImagePicker.cleanPermanentFiles() //cleanPermanentFiles
@@ -36,16 +37,33 @@ export default function useImagePick(actionAfterImage) {
       });
   };
 
+  const cropPhoto = ({imgPath}) => {
+    ImagePicker.openCropper({
+      path: imgPath,
+      cropperCircleOverlay: false,
+      cropperToolbarTitle: 'Crop Image',
+      cropperToolbarColor: '#FFFFFF',
+      freeStyleCropEnabled: true,
+      showCropGuidelines: false,
+      showCropFrame: true,
+    })
+      .then(image => {
+        setImages([image.path, ...images]);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
   const takePhoto = () => {
     ImagePicker.openCamera({
       width,
       height: 300,
-      cropping: true,
-      freeStyleCropEnabled: true,
     })
       .then(img => {
         console.log(img, 'imageFromCamera');
-        setImages([...images, img.path]);
+        cropPhoto({imgPath: img.path});
+        //setImages([...images, img.path]);
         actionAfterImage();
       })
       .catch(e => {
@@ -53,5 +71,14 @@ export default function useImagePick(actionAfterImage) {
       });
   };
 
-  return {images, takePhoto, chosePhotoFromGallery, cleanPhotos};
+  return {
+    images,
+    takePhoto,
+    photoTaken,
+    setPhotoTaken,
+    setImages,
+    chosePhotoFromGallery,
+    cleanPhotos,
+    cropPhoto,
+  };
 }
