@@ -10,12 +10,10 @@ export const useGallery = ({images}) => {
   });
 
   const renderGalleryFooterComponent = ({image}) => {
-    console.log('motam', image);
     return <GalleryFooter image={image} galleryImages={galleryImages} />;
   };
 
   const handleOpenGallery = index => {
-    console.log('gall');
     setGalleryConfig({isVisible: true, index});
   };
 

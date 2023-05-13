@@ -28,7 +28,6 @@ export const signInWithCredentials = async ({email, password, dispatch}) => {
       .then(() => dispatch({type: USER_SIGNIN_SUCCESS}))
       .catch(error => dispatch({type: USER_SIGNIN_FAIL, payload: {error}}));
   } catch (e) {
-    console.log({[USER_SIGNIN_FAIL]: e});
     dispatch({type: USER_SIGNIN_FAIL, payload: {error: null}});
   }
 };

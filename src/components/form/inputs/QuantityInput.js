@@ -38,7 +38,6 @@ export default function QuantityInput({
 
   const allowOnlyNumber = (value, onChange) => {
     const validated = /^\d+$/.test(value);
-    console.log(validated, 'yuna');
     if (value === '') {
       onChange('');
     } else if (validated) {
